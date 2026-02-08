@@ -1,0 +1,156 @@
+import java.util.*;
+
+class Order {
+    String productName;
+    int quantity;
+    double price;
+}
+
+class OrderPriceCalculator {
+    double calculateTotalPrice(Order order) {
+        return order.quantity * order.price * 0.9;
+    }
+}
+
+class PaymentProcessor {
+    void processPayment(String paymentDetails) {
+        System.out.println("Payment processed using: " + paymentDetails);
+    }
+}
+
+class OrderNotificationService {
+    void sendConfirmationEmail(String email) {
+        System.out.println("Confirmation email sent to: " + email);
+    }
+}
+
+class Employee {
+    String name;
+    double baseSalary;
+}
+
+interface SalaryCalculator {
+    double calculate(Employee employee);
+}
+
+class PermanentSalaryCalculator implements SalaryCalculator {
+    public double calculate(Employee employee) {
+        return employee.baseSalary * 1.2;
+    }
+}
+
+class ContractSalaryCalculator implements SalaryCalculator {
+    public double calculate(Employee employee) {
+        return employee.baseSalary * 1.1;
+    }
+}
+
+class InternSalaryCalculator implements SalaryCalculator {
+    public double calculate(Employee employee) {
+        return employee.baseSalary * 0.8;
+    }
+}
+
+class EmployeeSalaryService {
+    private SalaryCalculator calculator;
+
+    EmployeeSalaryService(SalaryCalculator calculator) {
+        this.calculator = calculator;
+    }
+
+    double calculateSalary(Employee employee) {
+        return calculator.calculate(employee);
+    }
+}
+
+interface Printer {
+    void print(String content);
+}
+
+interface ScannerDevice {
+    void scan(String content);
+}
+
+interface Fax {
+    void fax(String content);
+}
+
+class AllInOnePrinter implements Printer, ScannerDevice, Fax {
+    public void print(String content) {
+        System.out.println("Printing: " + content);
+    }
+
+    public void scan(String content) {
+        System.out.println("Scanning: " + content);
+    }
+
+    public void fax(String content) {
+        System.out.println("Faxing: " + content);
+    }
+}
+
+class BasicPrinter implements Printer {
+    public void print(String content) {
+        System.out.println("Printing: " + content);
+    }
+}
+
+interface MessageSender {
+    void send(String message);
+}
+
+class EmailSender implements MessageSender {
+    public void send(String message) {
+        System.out.println("Email sent: " + message);
+    }
+}
+
+class SmsSender implements MessageSender {
+    public void send(String message) {
+        System.out.println("SMS sent: " + message);
+    }
+}
+
+class NotificationService {
+    private List<MessageSender> senders;
+
+    NotificationService(List<MessageSender> senders) {
+        this.senders = senders;
+    }
+
+    void sendNotification(String message) {
+        for (MessageSender sender : senders) {
+            sender.send(message);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Order order = new Order();
+        order.productName = "Laptop";
+        order.quantity = 2;
+        order.price = 500;
+
+        OrderPriceCalculator priceCalculator = new OrderPriceCalculator();
+        System.out.println(priceCalculator.calculateTotalPrice(order));
+
+        Employee employee = new Employee();
+        employee.name = "John";
+        employee.baseSalary = 1000;
+
+        EmployeeSalaryService salaryService =
+                new EmployeeSalaryService(new PermanentSalaryCalculator());
+        System.out.println(salaryService.calculateSalary(employee));
+
+        Printer printer = new BasicPrinter();
+        printer.print("Hello");
+
+        List<MessageSender> senders = new ArrayList<>();
+        senders.add(new EmailSender());
+        senders.add(new SmsSender());
+
+        NotificationService notificationService = new NotificationService(senders);
+        notificationService.sendNotification("Hello");
+    }
+}
